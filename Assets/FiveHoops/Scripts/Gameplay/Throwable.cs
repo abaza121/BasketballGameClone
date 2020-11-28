@@ -21,7 +21,7 @@ namespace FiveHoops.Gameplay
         public void Throw(Vector3 Force)
         {
             rb.isKinematic = false;
-            rb.AddForce(Force, ForceMode.Impulse);
+            rb.AddRelativeForce(Force, ForceMode.Impulse);
         }
 
         public void OnCollisionEnter(Collision collision)

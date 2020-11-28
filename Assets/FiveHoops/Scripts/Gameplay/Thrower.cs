@@ -17,6 +17,7 @@ namespace FiveHoops.Gameplay
         {
             throwable.Hold();
             throwable.transform.position = holdingPositionTransform.position;
+            throwable.transform.rotation = this.transform.rotation;
             currentThrowable = throwable;
             SwipeDetector.OnSwipe += Throw;
         }

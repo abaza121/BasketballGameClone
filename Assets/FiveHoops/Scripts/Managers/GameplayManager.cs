@@ -12,6 +12,8 @@ namespace FiveHoops.Managers
         [SerializeField]
         private RoundBuilder roundBuilder;
         [SerializeField]
+        private PositionPicker positionPicker;
+        [SerializeField]
         private Thrower thrower;
         [SerializeField]
         private Throwable throwable;
@@ -31,6 +33,10 @@ namespace FiveHoops.Managers
 
         private void StartNewRound()
         {
+            var pickedTransform = positionPicker.PickRandomPosition();
+            thrower.transform.position = pickedTransform.position;
+            thrower.transform.rotation = pickedTransform.rotation;
+
             currentRound = roundBuilder.CreateRound(throwable, thrower);
             currentRound.StartRound();
             currentRound.RoundEnded += OnRoundEnded;
