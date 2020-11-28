@@ -28,7 +28,7 @@ namespace FiveHoops.Gameplay
         {
             if(collision.collider.tag == "Ground")
             {
-                TouchedGround.Invoke();
+                TouchedGround?.Invoke();
             }
         }
     }

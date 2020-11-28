@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine.UIElements;
 
 namespace FiveHoops.Gameplay.Rounds
 {
@@ -8,24 +9,40 @@ namespace FiveHoops.Gameplay.Rounds
     public class Round
     {
         public event Action RoundEnded;
-        private Throwable throwable;
-        private Thrower thrower;
+        protected Throwable throwable;
+        protected Thrower thrower;
 
-        public Round(Throwable throwable, Thrower thrower)
+        private PositionPicker positionPicker;
+
+        public Round(Throwable throwable, Thrower thrower, PositionPicker positionPicker)
         {
             this.throwable = throwable;
             this.thrower = thrower;
+            this.positionPicker = positionPicker;
         }
 
-        public void StartRound()
+        public virtual void StartRound()
         {
             throwable.TouchedGround += EndRound;
+            SetNewPosition();
+        }
+
+        public virtual void EndRound()
+        {
+            throwable.TouchedGround -= EndRound;
+            InvokeEndRound();
+        }
+
+        protected void SetNewPosition()
+        {
+            var pickedTransform = positionPicker.PickRandomPosition();
+            thrower.transform.position = pickedTransform.position;
+            thrower.transform.rotation = pickedTransform.rotation;
             thrower.LoadThrowable(throwable);
         }
 
-        public void EndRound()
+        protected void InvokeEndRound()
         {
-            throwable.TouchedGround -= EndRound;
             RoundEnded.Invoke();
         }
     }

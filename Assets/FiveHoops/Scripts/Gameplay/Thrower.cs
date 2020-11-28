@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace FiveHoops.Gameplay
 {
@@ -24,6 +25,11 @@ namespace FiveHoops.Gameplay
 
         public void Throw(SwipeData data)
         {
+            if(data.Direction != SwipeDirection.Up)
+            {
+                return;
+            }
+
             var force = PowerForceCalculator.GetForceFromSwipeData(data);
             currentThrowable.Throw(force);
             currentThrowable = null;

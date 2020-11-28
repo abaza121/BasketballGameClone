@@ -1,4 +1,6 @@
-﻿
+﻿using FiveHoops.Managers;
+using System.Collections;
+using UnityEngine;
 
 namespace FiveHoops.Gameplay.Rounds
 {
@@ -9,9 +11,35 @@ namespace FiveHoops.Gameplay.Rounds
     {
         private int roundTimeInSeconds;
 
-        public TimedRound(int timeInSeconds, Throwable throwable, Thrower thrower) : base(throwable, thrower)
+        public TimedRound(int timeInSeconds, Throwable throwable, Thrower thrower, PositionPicker positionPicker) : base(throwable, thrower, positionPicker)
         {
             roundTimeInSeconds = timeInSeconds;
+        }
+
+        public override void StartRound()
+        {
+            SetNewPosition();
+            GameManager.Instance.StartCoroutine(WaitThenEnd());
+            throwable.TouchedGround += SetNewPosition;
+        }
+
+        public override void EndRound()
+        {
+            throwable.TouchedGround -= SetNewPosition;
+            InvokeEndRound();
+        } 
+
+        private IEnumerator WaitThenEnd()
+        {
+            float time = 0;
+            while(time < roundTimeInSeconds)
+            {
+                time += Time.unscaledDeltaTime;
+                GameManager.Instance.UIManager.UpdateShownTime(time);
+                yield return null;
+            }
+
+            EndRound();
         }
     }
 }

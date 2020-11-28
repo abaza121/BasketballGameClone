@@ -7,9 +7,22 @@ namespace FiveHoops.Gameplay.Rounds
     /// </summary>
     public class RoundBuilder : MonoBehaviour
     {
-        public Round CreateRound(Throwable throwable, Thrower thrower)
+        [SerializeField]
+        private PositionPicker positionPicker;
+        [SerializeField]
+        private Thrower thrower;
+        [SerializeField]
+        private Throwable throwable;
+
+
+        public Round CreateRound()
         {
-            return new Round(throwable, thrower);
+            return new Round(throwable, thrower, positionPicker);
+        }
+
+        public Round CreateTimedRound(int timeInSeconds)
+        {
+            return new TimedRound(timeInSeconds, throwable, thrower, positionPicker);
         }
     }
 }

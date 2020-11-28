@@ -12,32 +12,23 @@ namespace FiveHoops.Managers
         [SerializeField]
         private RoundBuilder roundBuilder;
         [SerializeField]
-        private PositionPicker positionPicker;
-        [SerializeField]
-        private Thrower thrower;
-        [SerializeField]
-        private Throwable throwable;
+        private int roundTimeInSeconds;
 
         private Round currentRound;
 
-        // Start is called before the first frame update
-        private void Start()
+        public void StartNewGame()
         {
             StartNewRound();
         }
 
         private void OnRoundEnded()
         {
-            StartNewRound();
+            GameManager.Instance.GameOver();
         }
 
         private void StartNewRound()
         {
-            var pickedTransform = positionPicker.PickRandomPosition();
-            thrower.transform.position = pickedTransform.position;
-            thrower.transform.rotation = pickedTransform.rotation;
-
-            currentRound = roundBuilder.CreateRound(throwable, thrower);
+            currentRound = roundBuilder.CreateTimedRound(roundTimeInSeconds);
             currentRound.StartRound();
             currentRound.RoundEnded += OnRoundEnded;
         }
